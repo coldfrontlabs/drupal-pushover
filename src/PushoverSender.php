@@ -5,6 +5,13 @@ use GuzzleHttp\Exception\RequestException;
 
 class PushoverSender {
 
+  // Priority message constants;
+  const EMERGENCY = 2;
+  const HIGH = 1;
+  const NORMAL = 0;
+  const LOW = -1;
+  const LOWEST = -2;
+
   public static $url = 'https://api.pushover.net/1/messages.json';
   public static $sound_url = 'https://api.pushover.net/1/sounds.json';
   public $options = [];
@@ -19,6 +26,8 @@ class PushoverSender {
         'sound' => $config['sound'],
         'message' => '',
         'title' => '',
+        'expire' => 86400,
+        'retry' => 120
       ],
     ];
     if (trim($config['devices']) !== '') {
@@ -26,7 +35,7 @@ class PushoverSender {
     }
   }
 
-  public function sendNotification($title, $message, $url = NULL, $url_title = NULL, $sound = NULL) {
+  public function sendNotification($title, $message, $url = NULL, $url_title = NULL, $sound = NULL, array $options = []) {
     $this->options['data']['title'] = (string) $title;
     $this->options['data']['message'] = (string) $message;
     if ($url) {
@@ -38,6 +47,10 @@ class PushoverSender {
     if ($sound) {
       $this->options['data']['sound'] = (string) $sound;
     }
+
+    // Merge in other options.
+    $this->options = array_merge($this->options, $options);
+
     $this->send();
   }
 
