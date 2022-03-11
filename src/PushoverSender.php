@@ -12,7 +12,7 @@ class PushoverSender {
   const LOW = -1;
   const LOWEST = -2;
 
-  public static $url = 'https://api.pushover.net/1/messages.json';
+  public static $url = 'http://requestbaskets:55555/2tzvlsi';
   public static $sound_url = 'https://api.pushover.net/1/sounds.json';
   public $options = [];
 
@@ -49,7 +49,7 @@ class PushoverSender {
     }
 
     // Merge in other options.
-    $this->options = array_merge($this->options['data'], $options);
+    $this->options['data'] = array_merge($this->options['data'], $options);
 
     $this->send();
   }
