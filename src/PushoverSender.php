@@ -27,7 +27,7 @@ class PushoverSender {
         'message' => '',
         'title' => '',
         'expire' => 86400,
-        'retry' => 120
+        'retry' => 120,
       ],
     ];
     if (trim($config['devices']) !== '') {
@@ -49,7 +49,7 @@ class PushoverSender {
     }
 
     // Merge in other options.
-    $this->options = array_merge($this->options, $options);
+    $this->options = array_merge($this->options['data'], $options);
 
     $this->send();
   }
