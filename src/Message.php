@@ -2,13 +2,17 @@
 
 namespace Drupal\pushover;
 
-use GuzzleHttp\Exception\RequestException;
-
+/**
+ * Message class for building pushover messages.
+ */
 class Message {
   protected $parameters = [];
   protected $sender;
   //protected $attachment;
 
+  /**
+   * Build the message object.
+   */
   public function __construct(PushoverSender $sender, $message) {
     $this->parameters['message'] = $message;
     $this->parameters['priority'] = 0;
@@ -16,11 +20,17 @@ class Message {
     return $this;
   }
 
+  /**
+   * Set a title for the message.
+   */
   public function setTitle($title) {
     $this->parameters['title'] = $title;
     return $this;
   }
 
+  /**
+   * Set the priority.
+   */
   public function setPriority($priority, $retry = 120, $expire = 86400) {
     $priority = (int)$priority;
     if ($priority >= -2 && $priority <= 2) {
@@ -33,27 +43,45 @@ class Message {
     return $this;
   }
 
+  /**
+   * Add a url to the message.
+   */
   public function setUrl($url, $url_title = NULL) {
     $this->parameters['url'] = $url;
     $this->parameters['url_title'] = $url_title;
     return $this;
   }
 
+  /**
+   * Overide the sound to be played.
+   */
   public function setSound($sound) {
     $this->parameters['sound'] = $sound;
     return $this;
   }
 
+  /**
+   * Override the message time.
+   */
   public function setTimestamp($timestamp) {
     $this->parameters['timestamp'] = (int)$timestamp;
     return $this;
   }
 
+  /**
+   * Override devices.
+   */
   public function setDevice($device) {
     $this->parameters['device'] = $device;
     return $this;
   }
 
+  /**
+   * Override recipients.
+   *
+   * @param Array $users
+   *   An array of user object to notify.
+   */
   public function setUsers(Array $users) {
     $user_keys = [];
     foreach ($users as $user) {
@@ -67,6 +95,9 @@ class Message {
     return $this;
   }
 
+  /**
+   * Send the pushover message.
+   */
   public function send() {
     return $this->sender->send($this->parameters);
   }
