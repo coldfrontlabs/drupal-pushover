@@ -19,7 +19,11 @@ class PushoverLogger implements LoggerInterface {
           '@sitename' => \Drupal::config('system.site')->get('name'),
         ]);
         $message = strip_tags(t($message, $context)->render());
-        \Drupal::service('pushover.sender')->sendNotification($title, $message, NULL, NULL, 'alien');
+        \Drupal::service('pushover.sender')
+          ->message($message)
+          ->setTitle($title)
+          ->setSound('alien')
+          ->send();
       }
     }
   }

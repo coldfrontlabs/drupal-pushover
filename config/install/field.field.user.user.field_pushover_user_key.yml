@@ -1,0 +1,20 @@
+uuid: 3641c024-daa0-4a1e-863a-ba3a3d675e44
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_pushover_user_key
+  module:
+    - user
+id: user.user.field_pushover_user_key
+field_name: field_pushover_user_key
+entity_type: user
+bundle: user
+label: 'Pushover User Key'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

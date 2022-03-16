@@ -122,9 +122,6 @@ class PushoverAdminConfiguration extends ConfigFormBase {
       ->save();
 
     \Drupal::messenger()->addMessage($this->t('The configuration options have been saved.'));
-    \Drupal::messenger()->addMessage($this->t('A test notification has been sent.'));
-
-    \Drupal::service('pushover.sender')->sendNotification($this->t('Test config'), $this->t('Hello world !'));
   }
 
 }

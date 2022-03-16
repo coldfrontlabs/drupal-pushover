@@ -12,58 +12,47 @@ class PushoverSender {
   const LOW = -1;
   const LOWEST = -2;
 
-  public static $url = 'http://requestbaskets:55555/2tzvlsi';
-  public static $sound_url = 'https://api.pushover.net/1/sounds.json';
+  protected $url = 'https://api.pushover.net/1/messages.json';
+  protected $sound_url = 'https://api.pushover.net/1/sounds.json';
   public $options = [];
+
+  protected $last_response = NULL;
 
   public function __construct() {
     $config = \Drupal::config('pushover.config')->getRawData();
     $this->options = [
-      'method' => 'POST',
-      'data' => [
-        'token' => $config['api_key'],
-        'user' => $config['user_key'],
-        'sound' => $config['sound'],
-        'message' => '',
-        'title' => '',
-        'expire' => 86400,
-        'retry' => 120,
-      ],
+      'token' => $config['api_key'],
+      'user' => $config['user_key'],
+      'sound' => $config['sound'],
     ];
     if (trim($config['devices']) !== '') {
-      $this->options['data']['device'] = $config['devices'];
+      $this->options['device'] = $config['devices'];
     }
   }
 
-  public function sendNotification($title, $message, $url = NULL, $url_title = NULL, $sound = NULL, array $options = []) {
-    $this->options['data']['title'] = (string) $title;
-    $this->options['data']['message'] = (string) $message;
-    if ($url) {
-      $this->options['data']['url'] = $url;
-    }
-    if ($url_title) {
-      $this->options['data']['url_title'] = (string) $url_title;
-    }
-    if ($sound) {
-      $this->options['data']['sound'] = (string) $sound;
-    }
-
-    // Merge in other options.
-    $this->options['data'] = array_merge($this->options['data'], $options);
-
-    $this->send();
+  public function overrideURL($url) {
+    $this->url = $url;
   }
 
-  private function send() {
+  public function message($message) {
+    return new Message($this, $message);
+  }
+
+  public function send($message) {
     $client = \Drupal::httpClient();
-    $url = self::$url;
-    $options['form_params'] = $this->options['data'];
+    $options = array_merge($this->options, $message);
     try {
-      $response = $client->request('POST', $url, $options);
+      $this->last_response = $client->request('POST', $this->url, ['form_params' => $options]);
+      return $this->last_response->getStatusCode() == 200;
     }
     catch (RequestException $e) {
       watchdog_exception('pushover', $e);
+      return FALSE;
     }
+  }
+
+  public function lastResponse() {
+    return $this->last_response;
   }
 
   public function getSoundOptions() {
