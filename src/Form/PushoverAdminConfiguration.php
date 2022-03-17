@@ -7,6 +7,8 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Class PushoverAdminConfiguration.
+ *
+ * Stores the global config for the pushover sender service.
  */
 class PushoverAdminConfiguration extends ConfigFormBase {
 
@@ -68,24 +70,24 @@ class PushoverAdminConfiguration extends ConfigFormBase {
       '#size' => 64,
       '#default_value' => $config->get('devices'),
     ];
-    if ($config->get('api_key') != '' && $sounds = \Drupal::service('pushover.sender')->getSoundOptions()) {
-      $form['basic']['sound'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Sound'),
-        '#options' => $sounds,
-        '#default_value' => $config->get('sound'),
-        '#description' => $this->t('The sound to use for the notification'),
-      ];
-    }
-    else {
-      $form['basic']['sound'] = [
-        '#type' => 'value',
-        '#value' => 'pushover',
-      ];
-      $form['basic']['sound_help'] = [
-        '#markup' => '<p>' . t('Save API key to choose a sound.') . '</p>'
-      ];
-    }
+    // if ($config->get('api_key') != '' && $sounds = \Drupal::service('pushover.sender')->getSoundOptions()) {
+    //   $form['basic']['sound'] = [
+    //     '#type' => 'select',
+    //     '#title' => $this->t('Sound'),
+    //     '#options' => $sounds,
+    //     '#default_value' => $config->get('sound'),
+    //     '#description' => $this->t('The sound to use for the notification'),
+    //   ];
+    // }
+    // else {
+    //   $form['basic']['sound'] = [
+    //     '#type' => 'value',
+    //     '#value' => 'pushover',
+    //   ];
+    //   $form['basic']['sound_help'] = [
+    //     '#markup' => '<p>' . t('Save API key to choose a sound.') . '</p>'
+    //   ];
+    // }
 
     $form['notifications'] = [
       '#type' => 'fieldset',

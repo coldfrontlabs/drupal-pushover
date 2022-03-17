@@ -1,23 +1,31 @@
 <?php
+
 namespace Drupal\pushover;
 
 use GuzzleHttp\Exception\RequestException;
 
+/**
+ *
+ */
 class PushoverSender {
 
-  // Priority message constants;
+  // Priority message constants.
   const EMERGENCY = 2;
   const HIGH = 1;
   const NORMAL = 0;
   const LOW = -1;
   const LOWEST = -2;
 
-  protected $url = 'https://api.pushover.net/1/messages.json';
+  // protected $url = 'https://api.pushover.net/1/messages.json';
+  protected $url = 'http://requestbaskets:55555/sjboe7j';
   protected $sound_url = 'https://api.pushover.net/1/sounds.json';
   public $options = [];
 
   protected $last_response = NULL;
 
+  /**
+   *
+   */
   public function __construct() {
     $config = \Drupal::config('pushover.config')->getRawData();
     $this->options = [
@@ -30,14 +38,23 @@ class PushoverSender {
     }
   }
 
-  public function overrideURL($url) {
+  /**
+   *
+   */
+  public function overrideUrl($url) {
     $this->url = $url;
   }
 
+  /**
+   *
+   */
   public function message($message) {
     return new Message($this, $message);
   }
 
+  /**
+   *
+   */
   public function send($message) {
     $client = \Drupal::httpClient();
     $options = array_merge($this->options, $message);
@@ -51,10 +68,16 @@ class PushoverSender {
     }
   }
 
+  /**
+   *
+   */
   public function lastResponse() {
     return $this->last_response;
   }
 
+  /**
+   *
+   */
   public function getSoundOptions() {
     $client = \Drupal::httpClient();
     try {
@@ -69,4 +92,5 @@ class PushoverSender {
 
     return FALSE;
   }
+
 }
