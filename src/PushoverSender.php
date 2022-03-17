@@ -16,8 +16,7 @@ class PushoverSender {
   const LOW = -1;
   const LOWEST = -2;
 
-  // protected $url = 'https://api.pushover.net/1/messages.json';
-  protected $url = 'http://requestbaskets:55555/sjboe7j';
+  protected $url = 'https://api.pushover.net/1/messages.json';
   protected $sound_url = 'https://api.pushover.net/1/sounds.json';
   public $options = [];
 

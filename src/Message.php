@@ -8,7 +8,6 @@ namespace Drupal\pushover;
 class Message {
   protected $parameters = [];
   protected $sender;
-  //protected $attachment;
 
   /**
    * Build the message object.
@@ -32,7 +31,7 @@ class Message {
    * Set the priority.
    */
   public function setPriority($priority, $retry = 120, $expire = 86400) {
-    $priority = (int)$priority;
+    $priority = (int) $priority;
     if ($priority >= -2 && $priority <= 2) {
       $this->parameters['priority'] = $priority;
       if ($priority == 2) {
@@ -64,7 +63,7 @@ class Message {
    * Override the message time.
    */
   public function setTimestamp($timestamp) {
-    $this->parameters['timestamp'] = (int)$timestamp;
+    $this->parameters['timestamp'] = (int) $timestamp;
     return $this;
   }
 
@@ -79,10 +78,10 @@ class Message {
   /**
    * Override recipients.
    *
-   * @param Array $users
+   * @param array $users
    *   An array of user object to notify.
    */
-  public function setUsers(Array $users) {
+  public function setUsers(array $users) {
     $user_keys = [];
     foreach ($users as $user) {
       if ($user->hasField('field_pushover_user_key') && $user->get('field_pushover_user_key')) {
@@ -101,4 +100,5 @@ class Message {
   public function send() {
     return $this->sender->send($this->parameters);
   }
+
 }
