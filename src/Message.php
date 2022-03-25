@@ -84,7 +84,7 @@ class Message {
   public function setUsers(array $users) {
     $user_keys = [];
     foreach ($users as $user) {
-      if ($user->hasField('field_pushover_user_key') && $user->get('field_pushover_user_key')) {
+      if ($user->hasField('field_pushover_user_key') && !$user->field_pushover_user_key->isEmpty()) {
         $user_keys[] = $user->get('field_pushover_user_key')->first()->getValue()['value'];
       }
     }
