@@ -26,7 +26,7 @@ class PushoverSender {
    *
    */
   public function __construct() {
-    $config = \Drupal::config('pushover.config')->getRawData();
+    $config = \Drupal::config('pushover.config')->getOriginal();
     $this->options = [
       'token' => $config['api_key'],
       'user' => $config['user_key'],
