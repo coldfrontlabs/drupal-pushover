@@ -1,6 +1,5 @@
 name: pushover
 type: module
 description: Pushover integration
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 package: Web services
