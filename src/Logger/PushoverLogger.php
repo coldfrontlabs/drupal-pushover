@@ -6,12 +6,18 @@ use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Logger\RfcLogLevel;
 use Psr\Log\LoggerInterface;
 
+/**
+ *
+ */
 class PushoverLogger implements LoggerInterface {
 
   use RfcLoggerTrait;
 
-  public function log($level, $message, array $context = array()) {
-    if(\Drupal::config('pushover.notifications')->get('watchdog')) {
+  /**
+   *
+   */
+  public function log($level, string|\Stringable $message, array $context = []): void {
+    if (\Drupal::config('pushover.notifications')->get('watchdog')) {
       if (\in_array($level, [RfcLogLevel::EMERGENCY, RfcLogLevel::ALERT, RfcLogLevel::CRITICAL, RfcLogLevel::ERROR])) {
         $level_labels = RfcLogLevel::getLevels();
         $title = t('Error @level on @sitename', [
